@@ -2,9 +2,7 @@
 if (! isset($_SESSION['startNum'])){
   $_SESSION['startNum'] = rand(1,20);
 }
-?>
 
-<?php
 $message = false;
   if (! isset($_GET['guess']) ) {
     $_SESSION['attempt'] = 0;
@@ -22,16 +20,21 @@ $message = false;
     $message = "<p align=center>[Attempt ". $_SESSION['attempt'] ."] - ".$_GET['guess']." is too high</p>";
   } else {
     $_SESSION['attempt']++;
+    $_GET['restart'] = 1;
     $message = "<p align=center>CONGRATULATION!<br>You are right with ". $_SESSION['attempt'] ." Attempts<br> The correct number is ". $_SESSION['startNum']."</p>";
     if (isset($_GET['restart'])){
+      $_SESSION['attempt'] = 0 ;
       $_SESSION['startNum'] = rand(1,20);
     }
-
   }
+  //game will restart is correct guess or press restart button.
 
   if (isset($_GET['restart'])){
     $_SESSION['startNum'] = rand(1,20);
   }
+
+  $oldguess = isset($_GET['guess']) ? $_GET['guess'] : '';
+
 ?>
 
 <html>
@@ -44,10 +47,6 @@ $message = false;
 <div id="head">
     <h1> Welcome to my guessing game </h1>
 </div>
-
-<?php
-$oldguess = isset($_GET['guess']) ? $_GET['guess'] : '';
-?>
 
 <div id="form">
 <form method="get">
@@ -65,6 +64,7 @@ $oldguess = isset($_GET['guess']) ? $_GET['guess'] : '';
     echo ("<p>$message</p>\n");
   }
   ?>
+
   <hr>
   <form method="get">
     <button name="restart" id="restart" value="1">Restart</button>
