@@ -4,6 +4,36 @@ if (! isset($_SESSION['startNum'])){
 }
 ?>
 
+<?php
+$message = false;
+  if (! isset($_GET['guess']) ) {
+    $_SESSION['attempt'] = 0;
+  } else if ( strlen($_GET['guess']) < 1 ) {
+    $_SESSION['attempt']++;
+    $message = "<p align=center>[Attempt ". $_SESSION['attempt'] . "] - Enter your guess</p>";
+  } else if ( ! is_numeric($_GET['guess']) ) {
+    $_SESSION['attempt']++;
+    $message = "<p align=center>[Attempt ". $_SESSION['attempt'] ."] - \"".$_GET['guess']."\" is not a number</p>";
+  } else if ( $_GET['guess'] < $_SESSION['startNum'] ) {
+    $_SESSION['attempt']++;
+    $message = "<p align=center>[Attempt ". $_SESSION['attempt'] ."] - ".$_GET['guess']." is too low</p>";
+  } else if ( $_GET['guess'] > $_SESSION['startNum']) {
+    $_SESSION['attempt']++;
+    $message = "<p align=center>[Attempt ". $_SESSION['attempt'] ."] - ".$_GET['guess']." is too high</p>";
+  } else {
+    $_SESSION['attempt']++;
+    $message = "<p align=center>CONGRATULATION!<br>You are right with ". $_SESSION['attempt'] ." Attempts<br> The correct number is ". $_SESSION['startNum']."</p>";
+    if (isset($_GET['restart'])){
+      $_SESSION['startNum'] = rand(1,20);
+    }
+
+  }
+
+  if (isset($_GET['restart'])){
+    $_SESSION['startNum'] = rand(1,20);
+  }
+?>
+
 <html>
 <head>
   <link type="text/css" rel="stylesheet" href="style.css">
@@ -31,39 +61,6 @@ $oldguess = isset($_GET['guess']) ? $_GET['guess'] : '';
 </div>
 
   <?php
-  $message = false;
-    if (! isset($_GET['guess']) ) {
-      $_SESSION['attempt'] = 0;
-    } else if ( strlen($_GET['guess']) < 1 ) {
-      $_SESSION['attempt']++;
-      $message = "<p align=center>[Attempt ". $_SESSION['attempt'] . "] - Enter your guess</p>";
-    } else if ( ! is_numeric($_GET['guess']) ) {
-      $_SESSION['attempt']++;
-      $message = "<p align=center>[Attempt ". $_SESSION['attempt'] ."] - \"".$_GET['guess']."\" is not a number</p>";
-    } else if ( $_GET['guess'] < $_SESSION['startNum'] ) {
-      $_SESSION['attempt']++;
-      $message = "<p align=center>[Attempt ". $_SESSION['attempt'] ."] - ".$_GET['guess']." is too low</p>";
-    } else if ( $_GET['guess'] > $_SESSION['startNum']) {
-      $_SESSION['attempt']++;
-      $message = "<p align=center>[Attempt ". $_SESSION['attempt'] ."] - ".$_GET['guess']." is too high</p>";
-    } else {
-      $_SESSION['attempt']++;
-      $message = "<p align=center>CONGRATULATION!<br>You are right with ". $_SESSION['attempt'] ." Attempts<br> The correct number is ". $_SESSION['startNum']."</p>";
-      if (isset($_GET['restart'])){
-        $_SESSION['startNum'] = rand(1,20);
-      }
-
-    }
-
-
-    if (isset($_GET['restart'])){
-      $_SESSION['startNum'] = rand(1,20);
-    }
-
-
-  ?>
-
-  <?php
   if ($message !== false){
     echo ("<p>$message</p>\n");
   }
@@ -72,8 +69,6 @@ $oldguess = isset($_GET['guess']) ? $_GET['guess'] : '';
   <form method="get">
     <button name="restart" id="restart" value="1">Restart</button>
   </form>
-
-
 
   </body>
   </html>
