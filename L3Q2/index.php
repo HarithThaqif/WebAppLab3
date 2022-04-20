@@ -50,7 +50,6 @@ $oldguess = isset($_GET['guess']) ? $_GET['guess'] : '';
       $_SESSION['attempt']++;
       $message = "<p align=center>CONGRATULATION!<br>You are right with ". $_SESSION['attempt'] ." Attempts<br> The correct number is ". $_SESSION['startNum']."</p>";
       if (isset($_GET['restart'])){
-        session_reset();
         $_SESSION['startNum'] = rand(1,20);
       }
 
@@ -58,9 +57,9 @@ $oldguess = isset($_GET['guess']) ? $_GET['guess'] : '';
 
 
     if (isset($_GET['restart'])){
-      session_reset();
       $_SESSION['startNum'] = rand(1,20);
     }
+
 
   ?>
 
