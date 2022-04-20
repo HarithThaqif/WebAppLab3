@@ -62,7 +62,6 @@ $oldguess = isset($_GET['guess']) ? $_GET['guess'] : '';
       $_SESSION['startNum'] = rand(1,20);
     }
 
-echo ($_SESSION['startNum']);
   ?>
 
   <?php
